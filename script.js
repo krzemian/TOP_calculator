@@ -10,7 +10,8 @@ const Calculator = function() {
         '-': (x, y) => x - y,
         '*': (x, y) => x * y,
         '/': (x, y) => x / y,
-        // TODO: Add more operations
+        '^': (x, y) => x ** y,
+        '%': (x, y) => x / 100
     };
 
     const display = document.querySelector('#calculator__display');
@@ -22,6 +23,8 @@ const Calculator = function() {
     }
 
     this.refreshDisplay = function(value = null) {
+        // TODO: Allow more (i.e. 6) decimals,
+        // but round the 0.(3) type
         display.value = Math.round(+value * 10**DECIMALS)/10**DECIMALS;
     }
 
@@ -67,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // TODO!: Implement float (.)
             // Guardrails: one dot only (.contains()?), placed in the middle
             // Input handling: "." with no x appends it to "0."
+            // ! I need a way to temporarily store 0.0 and 3.0000 etc.
 
             // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
             // Consider a separate +/- button?
@@ -98,15 +102,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.clearOperator();
                 calculator.refreshDisplay();
             } else if (typeof x === 'number' && typeof y != 'number' && operatorValue != '=') {
-                // If there's no "y" yet, set/replace the operator
-                // (unless it's '=', then ignore it)
-                calculator.setOperator(operatorValue);
+                // If it's number + %, calculate it
+                if (operatorValue === '%') {
+                    // TODO: This violates DRY (see below), should be cleaner
+                    const result = calculator.calculate(x, y, operatorValue);
+                    calculator.setX(result);
+                    calculator.clearY();
+                    calculator.clearOperator();
+
+                    calculator.refreshDisplay(result);
+                } else {
+                    // If there's no "y" yet, set/replace the operator
+                    // (unless it's '=', then ignore it)
+                    calculator.setOperator(operatorValue);
+                }
             } else if (typeof x === 'number' 
                     && typeof y === 'number'
                     && operator != null) {
-                
-                // If the user just pressed "="...
                 if (operatorValue === '=') {
+                    // Just display results
                     const result = calculator.calculate(x, y, operator);
                     calculator.setX(result);
                     calculator.clearY();
@@ -120,7 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     calculator.clearOperator();
 
                     calculator.unaliveDisplay();
+                } else if (operatorValue === '%') {
+                    // This is a weird scenario, but I went for the logic:
+                    // Calculate whatever is in the memory, then
+                    // calculate x 100% (aka divide by 100), again
+                    const result = calculator.calculate(calculator.calculate(x, y, operator), 0, operatorValue);
+                    calculator.setX(result);
+                    calculator.clearY();
+                    calculator.clearOperator();
+
+                    calculator.refreshDisplay(result);
                 } else {
+                    // Finally, just calculate it
                     const result = calculator.calculate(x, y, operator);
                     calculator.setX(result);
                     calculator.clearY();
