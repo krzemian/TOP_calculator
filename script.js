@@ -25,6 +25,10 @@ const Calculator = function() {
         display.value = Math.round(+value * 10**DECIMALS)/10**DECIMALS;
     }
 
+    this.unaliveDisplay = function() {
+        display.value = '☠️☠️☠️';
+    }
+
     this.setX = function(x, append=false) {
         if (append) this.x = +`${this.x}${x}`;
         else this.x = +x;
@@ -99,16 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (typeof x === 'number' 
                     && typeof y === 'number'
                     && operator != null) {
-                const result = calculator.calculate(x, y, operator);
-                calculator.setX(result);
-                calculator.clearY();
-                calculator.setOperator(operatorValue);
-                calculator.refreshDisplay(result);
+
+                // Handle division by 0
+                if (y === 0 && operator === '/') {
+                    calculator.clearX();
+                    calculator.clearY();
+                    calculator.clearOperator();
+                    calculator.unaliveDisplay();
+                } else {
+                    const result = calculator.calculate(x, y, operator);
+                    calculator.setX(result);
+                    calculator.clearY();
+                    calculator.setOperator(operatorValue);
+                    calculator.refreshDisplay(result);
+                }
                         
-                // TODO: Implement logic for multiple "="s
-                // This would require applying the same operator & y multiple times
-                // Hence will likely require changes in 
-                // the operand/operator/result memory storage mechanism
+                // TODO: Implement logic for multiple "="s pressed
+                //   This would require applying the same operator & y multiple times
+                //   Hence will likely require changes in 
+                //   the operand/operator/result memory storage mechanism
              }
         }
 

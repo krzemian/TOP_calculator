@@ -29,7 +29,7 @@
 .calculator__operands {
     flex-basis: 70%;
 
-    /* Wrap the digits */
+    /* Wrap the digit buttons */
     display: flex;
     flex-wrap: wrap;
 }
