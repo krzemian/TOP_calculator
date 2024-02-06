@@ -11,10 +11,16 @@ const Calculator = function() {
         // TODO: Add more operations
     };
 
+    const display = document.querySelector('#calculator__display');
+
     // This seems excess, I prefered it without the wrapper methods
     // (nice practice, though)
     this.calculate = function(x, y, operator) {
         return operations[operator](x, y);
+    }
+
+    this.refreshDisplay = function(value = null) {
+        display.value = value;
     }
 
     this.setX = function(x, append=false) {
@@ -57,6 +63,10 @@ const Calculator = function() {
     }
 }
 
+// HOW THE DISPLAY NEEDS TO WORK
+// Show first operand, 
+// calculator.refreshDisplay
+
 document.addEventListener('DOMContentLoaded', () => {
     const APPEND = true;
     const calculatorGUI = document.querySelector('.calculator');
@@ -82,14 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // If x is empty -> set it
             if (x === null) {
                 calculator.setX(operandValue);
+                calculator.refreshDisplay(operandValue);
             } else if (typeof x === 'number' && operator === null) {
                 // If there's no operator yet -> keep appending digits
                 calculator.setX(operandValue, APPEND);
+                calculator.refreshDisplay(calculator.getX());
             } else if (y === null) {
                 calculator.setY(operandValue);
+                calculator.refreshDisplay(operandValue);
             } else if (typeof y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
                 calculator.setY(operandValue, APPEND);
+                calculator.refreshDisplay(calculator.getY());
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
             // OPERATOR CLICKED
@@ -100,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.clearX();
                 calculator.clearY();
                 calculator.clearOperator();
+                calculator.refreshDisplay();
             } else if (typeof x === 'number' && typeof y != 'number') {
                 // If there's no "y" yet, set/replace the operator
                 calculator.setOperator(operatorValue);
@@ -110,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.setX(result);
                 calculator.clearY();
                 calculator.setOperator(operatorValue);
+                calculator.refreshDisplay(result);
                         
                 // TODO: Implement logic for multiple "="s
                 // This would require applying the same operator & y multiple times
