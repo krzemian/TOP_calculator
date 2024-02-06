@@ -103,18 +103,28 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (typeof x === 'number' 
                     && typeof y === 'number'
                     && operator != null) {
+                
+                // If the user just pressed "="...
+                if (operatorValue === '=') {
+                    const result = calculator.calculate(x, y, operator);
+                    calculator.setX(result);
+                    calculator.clearY();
+                    calculator.clearOperator();
 
-                // Handle division by 0
-                if (y === 0 && operator === '/') {
+                    calculator.refreshDisplay(result);
+                } else if (y === 0 && operator === '/') {
+                    // Handle division by 0
                     calculator.clearX();
                     calculator.clearY();
                     calculator.clearOperator();
+
                     calculator.unaliveDisplay();
                 } else {
                     const result = calculator.calculate(x, y, operator);
                     calculator.setX(result);
                     calculator.clearY();
                     calculator.setOperator(operatorValue);
+
                     calculator.refreshDisplay(result);
                 }
                         
