@@ -6,13 +6,15 @@ const Calculator = function() {
     }
 }
 
-const methods = {
+const operations = {
     '+': (x, y) => x + y,
     '-': (x, y) => x + y,
     '*': (x, y) => x * y,
     '/': (x, y) => x / y
+    // TODO: Add more operations
 };
 
+//
 const leftOperandDOMInput = '3';
 const rightOperandDOMInput = '8';
 const operatorDOMInput = '+'; // Q: Will it be passed as string?
@@ -21,6 +23,6 @@ const leftOperand = +leftOperandDOMInput;
 const rightOperand = +rightOperandDOMInput;
 const operator = operatorDOMInput;
 
-console.log(methods[operator](leftOperand, rightOperand)); // 11
-console.log(methods['*'](3, 4)); // 12
-console.log(methods['/'](20, 3)); // 6.66
+console.log(operations[operator](leftOperand, rightOperand)); // 11
+console.log(operations['*'](3, 4)); // 12
+console.log(operations['/'](20, 3)); // 6.66
