@@ -1,4 +1,6 @@
 const Calculator = function() {
+    const DECIMALS = 2;
+    
     this.x = null;
     this.y = null;
     this.operator = null;
@@ -20,7 +22,7 @@ const Calculator = function() {
     }
 
     this.refreshDisplay = function(value = null) {
-        display.value = value;
+        display.value = Math.round(+value * 10**DECIMALS)/10**DECIMALS;
     }
 
     this.setX = function(x, append=false) {
