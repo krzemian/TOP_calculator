@@ -46,10 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // OPERATOR CLICKED
             const operatorValue = click.target.textContent;
 
-            if (typeof x != 'number' && typeof y != 'number') {
-                // If no digits yet, do nothing
-            } else if (typeof x === 'number' && typeof y != 'number') {
-                // If there's no y yet, set/replace the operator
+            if (typeof x === 'number' && typeof y != 'number') {
+                // If there's no "y" yet, set/replace the operator
                 operator = operatorValue;
             } else if (typeof x === 'number' 
                     && typeof y === 'number'
