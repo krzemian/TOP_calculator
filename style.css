@@ -1,35 +1,74 @@
 *, ::before, ::after {
     box-sizing: border-box;
+
+    --border-radius: 10px;
 }
 
+/* TODO: Make the flexbox truly dynamic 
+    Requirements: 3x4 for digits and [+/-]
+    Make "=" different color
+    Make BCK and CLR yet another color
+
+    Set borders that relate to the bg colors (i.e. tinted gray?)
+*/
 .calculator {
     margin: 1em auto 0;
-    padding: 2em;
-    width: 300px;
+    padding: 1em;
+    width: 400px;
     background: rgb(206, 206, 206);
-    border-radius: 5px;
+    border-radius: var(--border-radius);
 }
 
 #calculator__display {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
     font-size: 2rem;
+    text-align: right;
+
+    border: 1px solid black;
+    border-radius: var(--border-radius);
 }
 
 .calculator__buttons-container {
     display: flex;
+    gap: 0.5rem;
 }
 
 .calculator__button {
     padding: 0.5rem;
-    margin: 0.1rem;
+    /* margin: 0.1rem; */
     font-size: 1rem;
+
+    border: 1px solid black;
+    border-radius: var(--border-radius);
+    width: 40px;
+    height: 40px;
 }
 
 .calculator__operands {
-    flex-basis: 70%;
+    flex-basis: 500px; /* TODO: To be fixed */
+    /* background: red; */
 
     /* Wrap the digit buttons */
     display: flex;
+    gap: 0.25rem;
     flex-wrap: wrap;
+}
+
+.calculator__operators {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.calculator__button--operator {
+    background: orange;
+    border-color: #B07200;
+    color: #724a00;
+}
+
+.calculator__button--operator:active {
+    background: #FFC14E;
+    border-color: #a17a31;
 }

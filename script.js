@@ -217,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 //          any operation on non-"=" operands, wipe equalBuffer clean). Names: multiEqualsBuffer
                 // IDEA: Make it a rule to never store "=" as an operator (use it as a special trigger)
                 // IDEA: Perhaps I could implement a stack structure and push elements onto it
+
+                // TODO: Keep buttons as active (or otherwise indicate that a given operator is being applied)
              }
         }
 
