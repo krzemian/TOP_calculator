@@ -14,7 +14,7 @@ const operations = {
     // TODO: Add more operations
 };
 
-//
+// Simulate user input
 const leftOperandDOMInput = '3';
 const rightOperandDOMInput = '8';
 const operatorDOMInput = '+'; // Q: Will it be passed as string?
