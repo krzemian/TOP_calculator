@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // OPERAND CLICKED
             const operandValue = +click.target.textContent;
 
+            // TODO!: Implement float (.)
+            // Guardrails: one dot only (.contains()?), placed in the middle
+            // Input handling: "." with no x appends it to "0."
+
+            // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
+
             // If x is empty -> set it
             if (x === null) {
                 x = operandValue;
@@ -36,10 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 x = +`${x}${operandValue}`;
             } else if (y === null) {
                 y = operandValue;
-                console.log('trzy');
             } else if (typeof y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
-                console.log('cztery');
                 y = +`${y}${operandValue}`;
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
@@ -61,8 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 y = null;
                 operator = operatorValue;
                         
-                // TODO: Implement logic for multiple = 
-                // That would require applying the same operator & y multiple times
+                // TODO: Implement logic for multiple "="s
+                // This would require applying the same operator & y multiple times
                 // Hence will likely require changes in 
                 // the operand/operator/result memory storage mechanism
              }
