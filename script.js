@@ -97,8 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.clearY();
                 calculator.clearOperator();
                 calculator.refreshDisplay();
-            } else if (typeof x === 'number' && typeof y != 'number') {
+            } else if (typeof x === 'number' && typeof y != 'number' && operatorValue != '=') {
                 // If there's no "y" yet, set/replace the operator
+                // (unless it's '=', then ignore it)
                 calculator.setOperator(operatorValue);
             } else if (typeof x === 'number' 
                     && typeof y === 'number'

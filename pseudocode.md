@@ -6,8 +6,4 @@
 
 // TODO: How should I handle additional user input after some initial operations? Should I keep updating the operands? If so, which one, x or y?
 
-!!! BUG: 
-// make any calculation
-// press "="
-// PUT A DIGIT (now lop and rop are numbers, BUT (!) operator is =)
 + "Extra credit" section
