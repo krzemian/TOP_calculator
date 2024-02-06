@@ -11,8 +11,44 @@ const Calculator = function() {
         // TODO: Add more operations
     };
 
-    let calculate = function(x, y, operator) {
+    this.calculate = function(x, y, operator) {
         return operations[operator](x, y);
+    }
+
+    this.setX = function(x) {
+        this.x = x;
+    }
+
+    this.setY = function(y) {
+        this.y = y;
+    }
+
+    this.setOperator = function(operator) {
+        this.operator = operator;
+    }
+
+    this.getX = function() {
+        return this.x;
+    }
+
+    this.getY = function() {
+        return this.y;
+    }
+
+    this.getOperator = function() {
+        return this.operator;
+    }
+
+    this.clearX = function() {
+        return this.x = null;
+    }
+
+    this.clearY = function() {
+        return this.y = null;
+    }
+
+    this.clearOperator = function() {
+        return this.operator = null;
     }
 }
 
@@ -22,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Catch button events
     calculatorGUI.addEventListener('click', (click) => {
-        let x = calculator.x;
-        let y = calculator.y;
-        let operator = calculator.operator;
+        let x = calculator.getX();
+        let y = calculator.getY();
+        let operator = calculator.getOperator();
 
         if (click.target.classList.contains('calculator__button--operand')) {
             // OPERAND CLICKED
@@ -37,36 +73,36 @@ document.addEventListener('DOMContentLoaded', () => {
             // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
 
             // If x is empty -> set it
-            if (calculator.x === null) {
-                calculator.x = operandValue;
-            } else if (typeof calculator.x === 'number' && calculator.operator === null) {
+            if (x === null) {
+                calculator.setX(operandValue);
+            } else if (typeof x === 'number' && operator === null) {
                 // If there's no operator yet -> append digits to lOp
                 // TODO: Come up with a more elegant solution
-                calculator.x = +`${calculator.x}${operandValue}`;
-            } else if (calculator.y === null) {
-                calculator.y = operandValue;
-            } else if (typeof calculator.y === 'number') {
+                calculator.setX(+`${x}${operandValue}`);
+            } else if (y === null) {
+                calculator.setY(operandValue);
+            } else if (typeof y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
-                calculator.y = +`${calculator.y}${operandValue}`;
+                calculator.setY(+`${y}${operandValue}`);
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
             // OPERATOR CLICKED
             const operatorValue = click.target.textContent;
 
             if (operatorValue === 'CLR') {
-                calculator.x = null;
-                calculator.y = null;
-                calculator.operator = null;
-            } else if (typeof calculator.x === 'number' && typeof calculator.y != 'number') {
+                calculator.clearX();
+                calculator.clearY();
+                calculator.clearOperator();
+            } else if (typeof x === 'number' && typeof y != 'number') {
                 // If there's no "y" yet, set/replace the operator
-                calculator.operator = operatorValue;
-            } else if (typeof calculator.x === 'number' 
-                    && typeof calculator.y === 'number'
-                    && calculator.operator != null) {
+                calculator.setOperator(operatorValue);
+            } else if (typeof x === 'number' 
+                    && typeof y === 'number'
+                    && operator != null) {
                 const result = calculator.calculate(x, y, operator);
-                calculator.x = result;
-                calculator.y = null;
-                calculator.operator = operatorValue;
+                calculator.setX(result);
+                calculator.clearY();
+                calculator.setOperator(operatorValue);
                         
                 // TODO: Implement logic for multiple "="s
                 // This would require applying the same operator & y multiple times
