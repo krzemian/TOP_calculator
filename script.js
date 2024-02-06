@@ -1,28 +1,31 @@
 const Calculator = function() {
-    // add methods
+    this.x = null;
+    this.y = null;
+    this.operator = null;
 
-    this.calculate = function() {
-        
+    const operations = {
+        '+': (x, y) => x + y,
+        '-': (x, y) => x - y,
+        '*': (x, y) => x * y,
+        '/': (x, y) => x / y
+        // TODO: Add more operations
+    };
+
+    let calculate = function(x, y, operator) {
+        return operations[operator](x, y);
     }
 }
 
-const operations = {
-    '+': (x, y) => x + y,
-    '-': (x, y) => x - y,
-    '*': (x, y) => x * y,
-    '/': (x, y) => x / y
-    // TODO: Add more operations
-};
-
 document.addEventListener('DOMContentLoaded', () => {
-    const calculator = document.querySelector('.calculator');
-
-    let x = null;
-    let y = null;
-    let operator = null;
+    const calculatorGUI = document.querySelector('.calculator');
+    const calculator = new Calculator(); 
 
     // Catch button events
-    calculator.addEventListener('click', (click) => {
+    calculatorGUI.addEventListener('click', (click) => {
+        let x = calculator.x;
+        let y = calculator.y;
+        let operator = calculator.operator;
+
         if (click.target.classList.contains('calculator__button--operand')) {
             // OPERAND CLICKED
             const operandValue = +click.target.textContent;
@@ -34,36 +37,36 @@ document.addEventListener('DOMContentLoaded', () => {
             // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
 
             // If x is empty -> set it
-            if (x === null) {
-                x = operandValue;
-            } else if (typeof x === 'number' && operator === null) {
+            if (calculator.x === null) {
+                calculator.x = operandValue;
+            } else if (typeof calculator.x === 'number' && calculator.operator === null) {
                 // If there's no operator yet -> append digits to lOp
                 // TODO: Come up with a more elegant solution
-                x = +`${x}${operandValue}`;
-            } else if (y === null) {
-                y = operandValue;
-            } else if (typeof y === 'number') {
+                calculator.x = +`${calculator.x}${operandValue}`;
+            } else if (calculator.y === null) {
+                calculator.y = operandValue;
+            } else if (typeof calculator.y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
-                y = +`${y}${operandValue}`;
+                calculator.y = +`${calculator.y}${operandValue}`;
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
             // OPERATOR CLICKED
             const operatorValue = click.target.textContent;
 
             if (operatorValue === 'CLR') {
-                x = null;
-                y = null;
-                operator = null;
-            } else if (typeof x === 'number' && typeof y != 'number') {
+                calculator.x = null;
+                calculator.y = null;
+                calculator.operator = null;
+            } else if (typeof calculator.x === 'number' && typeof calculator.y != 'number') {
                 // If there's no "y" yet, set/replace the operator
-                operator = operatorValue;
-            } else if (typeof x === 'number' 
-                    && typeof y === 'number'
-                    && operator != null) {
-                const result = operations[operator](x, y);
-                x = result;
-                y = null;
-                operator = operatorValue;
+                calculator.operator = operatorValue;
+            } else if (typeof calculator.x === 'number' 
+                    && typeof calculator.y === 'number'
+                    && calculator.operator != null) {
+                const result = calculator.calculate(x, y, operator);
+                calculator.x = result;
+                calculator.y = null;
+                calculator.operator = operatorValue;
                         
                 // TODO: Implement logic for multiple "="s
                 // This would require applying the same operator & y multiple times
@@ -73,6 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // TEMP: Show variable values
-        console.table({lOperand: x, rOperand: y, operator: operator});
+        console.table({lOperand: calculator.x, rOperand: calculator.y, operator: calculator.operator});
     })
 });
