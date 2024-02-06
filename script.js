@@ -1,55 +1,55 @@
-const Calculator = function() {
-    const DECIMALS = 2;
-    
-    this.x = null;
-    this.y = null;
-    this.operator = null;
+class Calculator {
+    constructor() {
+        const DECIMALS = 2;
 
-    const operations = {
-        '+': (x, y) => x + y,
-        '-': (x, y) => x - y,
-        '*': (x, y) => x * y,
-        '/': (x, y) => x / y,
-        '^': (x, y) => x ** y,
-        '%': (x, y) => x / 100
-    };
+        this.x = null;
+        this.y = null;
+        this.operator = null;
 
-    const display = document.querySelector('#calculator__display');
+        const operations = {
+            '+': (x, y) => x + y,
+            '-': (x, y) => x - y,
+            '*': (x, y) => x * y,
+            '/': (x, y) => x / y,
+            '^': (x, y) => x ** y,
+            '%': (x, y) => x / 100
+        };
 
-    // This seems excess, I prefered it without the wrapper methods
-    // (nice practice, though)
-    this.calculate = function(x, y, operator) {
-        return operations[operator](x, y);
+        const display = document.querySelector('#calculator__display');
+
+        this.calculate = function (x, y, operator) {
+            return operations[operator](x, y);
+        };
+
+        this.refreshDisplay = function (value = null) {
+            // TODO: Allow more (i.e. 6) decimals,
+            // but round the 0.(3) type sooner
+            display.value = Math.round(+value * 10**DECIMALS) / 10**DECIMALS;
+        };
+
+        this.unaliveDisplay = function () {
+            display.value = '☠️☠️☠️';
+        };
+
+        this.setX = function (x, append = false) {
+            if (append) this.x = +`${this.x}${x}`;
+            else this.x = +x;
+        };
+
+        this.setY = function (y, append = false) {
+            // TODO: Come up with a more elegant solution than literals
+            if (append) this.y = +`${this.y}${y}`;
+            else this.y = +y;
+        };
+
+        this.setOperator = function (operator) { this.operator = operator; };
+        this.getX = function () { return this.x; };
+        this.getY = function () { return this.y; };
+        this.getOperator = function () { return this.operator; };
+        this.clearX = function () { return this.x = null; };
+        this.clearY = function () { return this.y = null; };
+        this.clearOperator = function () { return this.operator = null; };
     }
-
-    this.refreshDisplay = function(value = null) {
-        // TODO: Allow more (i.e. 6) decimals,
-        // but round the 0.(3) type
-        display.value = Math.round(+value * 10**DECIMALS)/10**DECIMALS;
-    }
-
-    this.unaliveDisplay = function() {
-        display.value = '☠️☠️☠️';
-    }
-
-    this.setX = function(x, append=false) {
-        if (append) this.x = +`${this.x}${x}`;
-        else this.x = +x;
-    }
-
-    this.setY = function(y, append=false) {
-        // TODO: Come up with a more elegant solution than literals
-        if (append) this.y = +`${this.y}${y}`;
-        else this.y = +y;
-    }
-
-    this.setOperator = function(operator) { this.operator = operator; }
-    this.getX = function() { return this.x; }
-    this.getY = function() { return this.y; }
-    this.getOperator = function() { return this.operator; }
-    this.clearX = function() { return this.x = null; }
-    this.clearY = function() { return this.y = null; }
-    this.clearOperator = function() { return this.operator = null; }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     calculator.refreshDisplay(result);
                 }
                         
-                // TODO: Implement logic for multiple "="s pressed
+                // TODO!: Implement logic for multiple "="s pressed
                 //   This would require applying the same operator & y multiple times
                 //   Hence will likely require changes in 
                 //   the operand/operator/result memory storage mechanism
@@ -162,6 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // TEMP: Log values to console
-        console.table({lOperand: calculator.x, rOperand: calculator.y, operator: calculator.operator});
+        console.table({
+            L: calculator.x, 
+            R: calculator.y, 
+            OP: calculator.operator
+        });
     })
 });
