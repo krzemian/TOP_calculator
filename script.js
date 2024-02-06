@@ -36,38 +36,14 @@ const Calculator = function() {
         else this.y = +y;
     }
 
-    this.setOperator = function(operator) {
-        this.operator = operator;
-    }
-
-    this.getX = function() {
-        return this.x;
-    }
-
-    this.getY = function() {
-        return this.y;
-    }
-
-    this.getOperator = function() {
-        return this.operator;
-    }
-
-    this.clearX = function() {
-        return this.x = null;
-    }
-
-    this.clearY = function() {
-        return this.y = null;
-    }
-
-    this.clearOperator = function() {
-        return this.operator = null;
-    }
+    this.setOperator = function(operator) { this.operator = operator; }
+    this.getX = function() { return this.x; }
+    this.getY = function() { return this.y; }
+    this.getOperator = function() { return this.operator; }
+    this.clearX = function() { return this.x = null; }
+    this.clearY = function() { return this.y = null; }
+    this.clearOperator = function() { return this.operator = null; }
 }
-
-// HOW THE DISPLAY NEEDS TO WORK
-// Show first operand, 
-// calculator.refreshDisplay
 
 document.addEventListener('DOMContentLoaded', () => {
     const APPEND = true;
@@ -136,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
              }
         }
 
-        // TEMP: Show variable values
+        // TEMP: Log values to console
         console.table({lOperand: calculator.x, rOperand: calculator.y, operator: calculator.operator});
     })
 });
