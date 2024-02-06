@@ -8,7 +8,7 @@ const Calculator = function() {
 
 const operations = {
     '+': (x, y) => x + y,
-    '-': (x, y) => x + y,
+    '-': (x, y) => x - y,
     '*': (x, y) => x * y,
     '/': (x, y) => x / y
     // TODO: Add more operations
@@ -54,23 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (typeof x === 'number' 
                     && typeof y === 'number'
                     && operator != null) {
-                console.log('calculate stuff');
-                console.log(operations[operator](x, y));
-        // if two -> 
-            // act as "="
-            // move the new sum to x, empty y
-            // [this should then proceed to #ONE above]
-                // replace the operator with the new one (same as #ONE)
-
-// When user hits "="
-    // if two operands and an operand are declared
-        // Calculate:
-            // Find the dedicated arrow function (based on the operand)
-            // Once calculated, store value in x, #CLEAR clear operator & y
-            // TODO: Implement logic for multiple = (that would require applying the same operator & y multiple times, so I would not be clearing it in #CLEAR above)
-    // else -> do nothing
-
-                // TODO: Implement a slightly different logic for reg. operators vs =
+                const result = operations[operator](x, y);
+                x = result;
+                y = null;
+                operator = operatorValue;
+                        
+                // TODO: Implement logic for multiple = 
+                // That would require applying the same operator & y multiple times
+                // Hence will likely require changes in 
+                // the operand/operator/result memory storage mechanism
              }
         }
 
