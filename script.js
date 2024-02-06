@@ -17,12 +17,15 @@ const Calculator = function() {
         return operations[operator](x, y);
     }
 
-    this.setX = function(x) {
-        this.x = x;
+    this.setX = function(x, append=false) {
+        if (append) this.x = +`${this.x}${x}`;
+        else this.x = +x;
     }
 
-    this.setY = function(y) {
-        this.y = y;
+    this.setY = function(y, append=false) {
+        // TODO: Come up with a more elegant solution than literals
+        if (append) this.y = +`${this.y}${y}`;
+        else this.y = +y;
     }
 
     this.setOperator = function(operator) {
@@ -55,6 +58,7 @@ const Calculator = function() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const APPEND = true;
     const calculatorGUI = document.querySelector('.calculator');
     const calculator = new Calculator(); 
 
@@ -79,14 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (x === null) {
                 calculator.setX(operandValue);
             } else if (typeof x === 'number' && operator === null) {
-                // If there's no operator yet -> append digits to lOp
-                // TODO: Come up with a more elegant solution
-                calculator.setX(+`${x}${operandValue}`);
+                // If there's no operator yet -> keep appending digits
+                calculator.setX(operandValue, APPEND);
             } else if (y === null) {
                 calculator.setY(operandValue);
             } else if (typeof y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
-                calculator.setY(+`${y}${operandValue}`);
+                calculator.setY(operandValue, APPEND);
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
             // OPERATOR CLICKED
