@@ -17,8 +17,8 @@ const operations = {
 document.addEventListener('DOMContentLoaded', () => {
     const calculator = document.querySelector('.calculator');
 
-    let leftOperand = null;
-    let rightOperand = null;
+    let x = null;
+    let y = null;
     let operator = null;
 
     // Catch button events
@@ -27,38 +27,38 @@ document.addEventListener('DOMContentLoaded', () => {
             // OPERAND CLICKED
             const operandValue = +click.target.textContent;
 
-            // If leftOperand is empty -> set it
-            if (leftOperand === null) {
-                leftOperand = operandValue;
-            } else if (typeof leftOperand === 'number' && operator === null) {
+            // If x is empty -> set it
+            if (x === null) {
+                x = operandValue;
+            } else if (typeof x === 'number' && operator === null) {
                 // If there's no operator yet -> append digits to lOp
                 // TODO: Come up with a more elegant solution
-                leftOperand = +`${leftOperand}${operandValue}`;
-            } else if (rightOperand === null) {
-                rightOperand = operandValue;
+                x = +`${x}${operandValue}`;
+            } else if (y === null) {
+                y = operandValue;
                 console.log('trzy');
-            } else if (typeof rightOperand === 'number') {
+            } else if (typeof y === 'number') {
                 // If lOp & the operator are already there, set/replace the rOp
                 console.log('cztery');
-                rightOperand = +`${rightOperand}${operandValue}`;
+                y = +`${y}${operandValue}`;
             }        
         } else if (click.target.classList.contains('calculator__button--operator')) {
             // OPERATOR CLICKED
             const operatorValue = click.target.textContent;
 
-            if (typeof leftOperand != 'number' && typeof rightOperand != 'number') {
+            if (typeof x != 'number' && typeof y != 'number') {
                 // If no digits yet, do nothing
-            } else if (typeof leftOperand === 'number' && typeof rightOperand != 'number') {
-                // If there's no rightOperand yet, set/replace the operator
+            } else if (typeof x === 'number' && typeof y != 'number') {
+                // If there's no y yet, set/replace the operator
                 operator = operatorValue;
-            } else if (typeof leftOperand === 'number' 
-                    && typeof rightOperand === 'number'
+            } else if (typeof x === 'number' 
+                    && typeof y === 'number'
                     && operator != null) {
                 console.log('calculate stuff');
-                console.log(operations[operator](leftOperand, rightOperand));
+                console.log(operations[operator](x, y));
         // if two -> 
             // act as "="
-            // move the new sum to leftOperand, empty rightOperand
+            // move the new sum to x, empty y
             // [this should then proceed to #ONE above]
                 // replace the operator with the new one (same as #ONE)
 
@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // if two operands and an operand are declared
         // Calculate:
             // Find the dedicated arrow function (based on the operand)
-            // Once calculated, store value in leftOperand, #CLEAR clear operator & rightOperand
-            // TODO: Implement logic for multiple = (that would require applying the same operator & rightOperand multiple times, so I would not be clearing it in #CLEAR above)
+            // Once calculated, store value in x, #CLEAR clear operator & y
+            // TODO: Implement logic for multiple = (that would require applying the same operator & y multiple times, so I would not be clearing it in #CLEAR above)
     // else -> do nothing
 
                 // TODO: Implement a slightly different logic for reg. operators vs =
@@ -75,6 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // TEMP: Show variable values
-        console.table({lOperand: leftOperand, rOperand: rightOperand, operator: operator});
+        console.table({lOperand: x, rOperand: y, operator: operator});
     })
 });
