@@ -7,10 +7,12 @@ const Calculator = function() {
         '+': (x, y) => x + y,
         '-': (x, y) => x - y,
         '*': (x, y) => x * y,
-        '/': (x, y) => x / y
+        '/': (x, y) => x / y,
         // TODO: Add more operations
     };
 
+    // This seems excess, I prefered it without the wrapper methods
+    // (nice practice, though)
     this.calculate = function(x, y, operator) {
         return operations[operator](x, y);
     }
@@ -71,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Input handling: "." with no x appends it to "0."
 
             // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
+            // Consider a separate +/- button?
 
             // If x is empty -> set it
             if (x === null) {
@@ -90,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const operatorValue = click.target.textContent;
 
             if (operatorValue === 'CLR') {
+                // TODO: Implement AC/C, too
                 calculator.clearX();
                 calculator.clearY();
                 calculator.clearOperator();
