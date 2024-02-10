@@ -255,26 +255,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('keydown', (e) => {
-        console.log(e.key);
-        console.log(e.code);
-
-        // Register digits and . as operands
-        // For some reason e.key in '.' does not work, 
-        // using e.code === 'Period' as fallback
         if(e.key in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'] || 
+            // Register digits and . as operands
+            // For some reason e.key in '.' does not work, 
+            // using e.code === 'Period' as fallback
            e.code === 'Period') {
             console.log('hej');
             calculator.pushOperand(e.key);
         }
-
-        // Register operators
-        if (calculator.hasOperator(e.key) || e.key === '=') {
+        else if (calculator.hasOperator(e.key) || e.key === '=') {
+            // Register operators
             calculator.pushOperator(e.key);
         }
-
-        // Special handling for CLR and backspace
-        if (e.key === 'Backspace') calculator.pushOperator('BCKSPC');
-        if (e.key === 'c') calculator.pushOperator('CLR');
+        else if (e.key === 'Backspace') calculator.pushOperator('BCKSPC');
+        else if (e.key === 'c') calculator.pushOperator('CLR');
 
         // TEMP: Log values to console
         calculator.logValues();
