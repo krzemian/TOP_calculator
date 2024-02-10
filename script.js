@@ -57,6 +57,10 @@ class Calculator {
             }       
         };
 
+        this.hasOperator = function(operator) {
+            return (operator in operations);
+        }
+
         this.pushOperator = function(operatorValue) {
             if (operatorValue === 'CLR') {
                 // TODO: Implement AC/C, too
@@ -70,7 +74,7 @@ class Calculator {
                     // This actually requires getting y
                     // via getY() due to value parsing 
                     this.refreshDisplay(this.getY());
-                } else if (x != null) {
+                } else if (this.getX() != null) {
                     this.trimX();
                     // See refreshDisplay() above for rationale
                     this.refreshDisplay(this.getX());
@@ -220,6 +224,14 @@ class Calculator {
         this.clearX = function () { return this.x = null; };
         this.clearY = function () { return this.y = null; };
         this.clearOperator = function () { return this.operator = null; };
+
+        this.logValues = function () {
+            console.table({
+                L: this.getX(), 
+                R: this.getY(), 
+                OP: this.getOperator()
+            });
+        }
     };
 }
 
@@ -230,10 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Catch button events
     calculatorGUI.addEventListener('click', (click) => {
-        let x = calculator.getX();
-        let y = calculator.getY();
-        let operator = calculator.getOperator();
-
         if (click.target.classList.contains('calculator__button--operand')) {
             // OPERAND CLICKED
             calculator.pushOperand(click.target.textContent); 
@@ -243,10 +251,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // TEMP: Log values to console
-        console.table({
-            L: calculator.x, 
-            R: calculator.y, 
-            OP: calculator.operator
-        });
-    })
+        calculator.logValues();
+    });
+
+    window.addEventListener('keydown', (e) => {
+        console.log(e.key);
+        console.log(e.code);
+
+        // Register digits and . as operands
+        // For some reason e.key in '.' does not work, 
+        // using e.code === 'Period' as fallback
+        if(e.key in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'] || 
+           e.code === 'Period') {
+            console.log('hej');
+            calculator.pushOperand(e.key);
+        }
+
+        // Register operators
+        if (calculator.hasOperator(e.key) || e.key === '=') {
+            calculator.pushOperator(e.key);
+        }
+
+        // Special handling for CLR and backspace
+        if (e.key === 'Backspace') calculator.pushOperator('BCKSPC');
+        if (e.key === 'c') calculator.pushOperator('CLR');
+
+        // TEMP: Log values to console
+        calculator.logValues();
+    });
 });
