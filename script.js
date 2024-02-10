@@ -190,6 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     calculator.refreshDisplay(result);
                 }
+
+                // TODO: Make keyboard, but disregard any other keys except for the ones that make sense for calculating (+, -, /, *, 0–9 – what about pwr and sqrt?)
+                // You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
                         
                 // TODO!: Implement logic for multiple "="s pressed
                 //   This would require applying the same operator & y multiple times
