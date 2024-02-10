@@ -8,7 +8,7 @@ class Calculator {
             '*': (x, y) => +x * +y,
             '/': (x, y) => +x / +y,
             '^': (x, y) => (+x) ** +y,
-            '%': (x, y) => +x / 100
+            '%': (x, y) => +x / 100 // TODO!: Fix %
         };
         const display = document.querySelector('#calculator__display');
 
@@ -92,7 +92,7 @@ class Calculator {
             } else if (this.getX() != null 
                     && this.getY() != null
                     && this.getOperator() != null) {
-                if (operatorValue === '=') {
+                if (operatorValue === '=' && this.getY() != '0') {
                     // Just display results
                     const result = this.calculate();
                     this.setX(result);
