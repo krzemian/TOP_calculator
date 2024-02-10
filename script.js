@@ -7,12 +7,12 @@ class Calculator {
         this.operator = null;
 
         const operations = {
-            '+': (x, y) => x + y,
-            '-': (x, y) => x - y,
-            '*': (x, y) => x * y,
-            '/': (x, y) => x / y,
-            '^': (x, y) => x ** y,
-            '%': (x, y) => x / 100
+            '+': (x, y) => +x + +y,
+            '-': (x, y) => +x - +y,
+            '*': (x, y) => +x * +y,
+            '/': (x, y) => +x / +y,
+            '^': (x, y) => (+x) ** +y,
+            '%': (x, y) => +x / 100
         };
 
         const display = document.querySelector('#calculator__display');
@@ -33,26 +33,28 @@ class Calculator {
         };
 
         this.trimX = function () {
-            this.x = +this.x.toString().slice(0, -1);
+            this.x = this.x.slice(0, -1);
         }
         
         this.trimY = function () {
-            this.y = +this.y.toString().slice(0, -1);
+            this.y = this.y.slice(0, -1);
         }
 
         this.setX = function (x, append = false) {
-            if (append) this.x = +`${this.x}${x}`;
-            else this.x = +x;
+            if (append) this.x = `${this.x}${x}`;
+            else this.x = x.toString();
         };
 
         this.setY = function (y, append = false) {
             // TODO: Come up with a more elegant solution than literals
-            if (append) this.y = +`${this.y}${y}`;
-            else this.y = +y;
+            if (append) this.y = `${this.y}${y}`;
+            else this.y = y.toString();
         };
 
         this.setOperator = function (operator) { this.operator = operator; };
 
+        // x and y are stored as strings now to allow 
+        // easy storage of unfinished numbers, like 3.000 or 0.
         this.getX = function () { return this.x; };
         this.getY = function () { return this.y; };
         this.getOperator = function () { return this.operator; };
@@ -76,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (click.target.classList.contains('calculator__button--operand')) {
             // OPERAND CLICKED
-            const operandValue = +click.target.textContent;
+            const operandValue = click.target.textContent;
 
             // TODO!: Implement float (.)
             // Guardrails: one dot only (.contains()?), placed in the middle
@@ -111,14 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (x === null) {
                 calculator.setX(operandValue);
                 calculator.refreshDisplay(operandValue);
-            } else if (typeof x === 'number' && operator === null) {
+            } else if (x != null && operator === null) {
                 // If there's no operator yet -> keep appending digits
                 calculator.setX(operandValue, APPEND);
                 calculator.refreshDisplay(calculator.getX());
             } else if (y === null) {
                 calculator.setY(operandValue);
                 calculator.refreshDisplay(operandValue);
-            } else if (typeof y === 'number') {
+            } else if (y != null) {
                 // If lOp & the operator are already there, set/replace the rOp
                 calculator.setY(operandValue, APPEND);
                 calculator.refreshDisplay(calculator.getY());
@@ -135,18 +137,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.refreshDisplay();
             } else if (operatorValue === 'BCKSPC') {
                 // TODO!: It needs to handle NUMBER-IN-PROGRESS values (i.e. 0.4 -> 0.)
-                if (typeof y === 'number') {
+                if (y != null) {
                     calculator.trimY();
                     calculator.refreshDisplay(calculator.getY());
                     // WIP: Remove one character of y
-                } else if (typeof x === 'number') {
+                } else if (x != null) {
                     calculator.trimX();
                     calculator.refreshDisplay(calculator.getX());
                     calculator.clearOperator();
                     // WIP: Remove one character of x
                 }
 
-            } else if (typeof x === 'number' && typeof y != 'number' && operatorValue != '=') {
+            } else if (x != null && y === null && operatorValue != '=') {
                 // If it's number + %, calculate it
                 if (operatorValue === '%') {
                     // TODO: This violates DRY (see below), should be cleaner
@@ -161,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     // (unless it's '=', then ignore it)
                     calculator.setOperator(operatorValue);
                 }
-            } else if (typeof x === 'number' 
-                    && typeof y === 'number'
+            } else if (x != null 
+                    && y != null
                     && operator != null) {
                 if (operatorValue === '=') {
                     // Just display results
@@ -172,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     calculator.clearOperator();
 
                     calculator.refreshDisplay(result);
-                } else if (y === 0 && operator === '/') {
+                } else if (y === '0' && operator === '/') {
                     // Handle division by 0
                     calculator.clearX();
                     calculator.clearY();
