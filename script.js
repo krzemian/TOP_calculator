@@ -67,9 +67,12 @@ class Calculator {
             } else if (operatorValue === 'BCKSPC') {
                 if (this.getY() != null) {
                     this.trimY();
+                    // This actually requires getting y
+                    // via getY() due to value parsing 
                     this.refreshDisplay(this.getY());
                 } else if (x != null) {
                     this.trimX();
+                    // See refreshDisplay() above for rationale
                     this.refreshDisplay(this.getX());
                     this.clearOperator();
                 }
@@ -78,8 +81,10 @@ class Calculator {
                 // If it's number + %, calculate it
                 if (operatorValue === '%') {
                     // TODO: This violates DRY (see below), should be cleaner
+                    this.setOperator(operatorValue);
                     const result = this.calculate();
                     this.setX(result);
+
                     this.clearY();
                     this.clearOperator();
 
@@ -111,8 +116,17 @@ class Calculator {
                     // This is a weird scenario, but I went for the logic:
                     // Calculate whatever is in the memory, then
                     // calculate x 100% (aka divide by 100), again
-                    const result = this.calculate(this.calculate(), 0, operatorValue);
+
+                    // Calculate whatever's in memory and put results in x
+                    this.setX(this.calculate());
+
+                    // Set it ready for '%' calculations
+                    this.setOperator(operatorValue);
+                    const result = this.calculate();
+
+                    // Set x again
                     this.setX(result);
+
                     this.clearY();
                     this.clearOperator();
 
