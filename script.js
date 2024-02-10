@@ -176,7 +176,13 @@ class Calculator {
                 // Reject multiple '.'
                 if (value != '.' || 
                     (value === '.' && !this[operand].includes('.'))) {
-                    this[operand] = `${this[operand]}${value}`;
+
+                    // Avoid appending zeroes to 0 (i.e. '00')
+                    if (this[operand] != '0') {
+                        this[operand] = `${this[operand]}${value}`;
+                    } else {
+                        this[operand] = value;
+                    }
                 }
             }
             else {
