@@ -36,40 +36,32 @@ class Calculator {
         }
 
         this.setX = function (x, append = false) {
-            if (append) {
-                // Reject multiple '.'
-                if (x != '.' || 
-                    (x === '.' && !this.x.includes('.'))) {
-                    this.x = `${this.x}${x}`;
-                }
-            }
-            else {
-                // If it's the first digit and it's '.', add it as '0.'
-                if (this.x === null && x === '.') {
-                    this.x = '0.';
-                } else {
-                    this.x = x.toString();
-                }
-            }
+            this.setOperand('x', x, append);
         };
 
         this.setY = function (y, append = false) {
+            this.setOperand('y', y, append);
+        };
+
+        this.setOperand = function (operand, value, append = false) {
+            if (operand != 'x' && operand != 'y') return undefined;
+            
             if (append) {
                 // Reject multiple '.'
-                if (y != '.' || 
-                    (y === '.' && !this.y.includes('.'))) {
-                    this.y = `${this.y}${y}`;
+                if (value != '.' || 
+                    (value === '.' && !this[operand].includes('.'))) {
+                    this[operand] = `${this[operand]}${value}`;
                 }
             }
             else {
                 // If it's the first digit and it's '.', add it as '0.'
-                if (this.y === null && y === '.') {
-                    this.y = '0.';
+                if (this[operand] === null && value === '.') {
+                    this[operand] = '0.';
                 } else {
-                    this.y = y.toString();
+                    this[operand] = value.toString();
                 }
             }
-        };
+        }
 
         this.setOperator = function (operator) { this.operator = operator; };
 
