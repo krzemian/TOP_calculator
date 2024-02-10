@@ -17,8 +17,8 @@ class Calculator {
 
         const display = document.querySelector('#calculator__display');
 
-        this.calculate = function (x, y, operator) {
-            return operations[operator](x, y);
+        this.calculate = function () {
+            return operations[this.operator](this.x, this.y);
         };
 
         this.refreshDisplay = function (value = null) {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // If it's number + %, calculate it
                 if (operatorValue === '%') {
                     // TODO: This violates DRY (see below), should be cleaner
-                    const result = calculator.calculate(x, y, operatorValue);
+                    const result = calculator.calculate();
                     calculator.setX(result);
                     calculator.clearY();
                     calculator.clearOperator();
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     && operator != null) {
                 if (operatorValue === '=') {
                     // Just display results
-                    const result = calculator.calculate(x, y, operator);
+                    const result = calculator.calculate();
                     calculator.setX(result);
                     calculator.clearY();
                     calculator.clearOperator();
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // This is a weird scenario, but I went for the logic:
                     // Calculate whatever is in the memory, then
                     // calculate x 100% (aka divide by 100), again
-                    const result = calculator.calculate(calculator.calculate(x, y, operator), 0, operatorValue);
+                    const result = calculator.calculate(calculator.calculate(), 0, operatorValue);
                     calculator.setX(result);
                     calculator.clearY();
                     calculator.clearOperator();
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     calculator.refreshDisplay(result);
                 } else {
                     // Finally, just calculate it
-                    const result = calculator.calculate(x, y, operator);
+                    const result = calculator.calculate();
                     calculator.setX(result);
                     calculator.clearY();
                     calculator.setOperator(operatorValue);
