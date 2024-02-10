@@ -1,7 +1,5 @@
 class Calculator {
     constructor() {
-        const DECIMALS = 2;
-
         this.x = null;
         this.y = null;
         this.operator = null;
@@ -22,10 +20,7 @@ class Calculator {
         };
 
         this.refreshDisplay = function (value = null) {
-            // TODO: Allow more (i.e. 6) decimals,
-            // but round the 0.(3) repeating/recurring decimals
-            // Q: How would I detect repeating decimals in JS?
-            display.value = Math.round(+value * 10**DECIMALS) / 10**DECIMALS;
+            display.value = value;
         };
 
         this.unaliveDisplay = function () {
@@ -41,6 +36,7 @@ class Calculator {
         }
 
         this.setX = function (x, append = false) {
+            // TODO: Reject multiple '.'
             if (append) this.x = `${this.x}${x}`;
             else this.x = x.toString();
         };
