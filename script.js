@@ -36,15 +36,39 @@ class Calculator {
         }
 
         this.setX = function (x, append = false) {
-            // TODO: Reject multiple '.'
-            if (append) this.x = `${this.x}${x}`;
-            else this.x = x.toString();
+            if (append) {
+                // Reject multiple '.'
+                if (x != '.' || 
+                    (x === '.' && !this.x.includes('.'))) {
+                    this.x = `${this.x}${x}`;
+                }
+            }
+            else {
+                // If it's the first digit and it's '.', add it as '0.'
+                if (this.x === null && x === '.') {
+                    this.x = '0.';
+                } else {
+                    this.x = x.toString();
+                }
+            }
         };
 
         this.setY = function (y, append = false) {
-            // TODO: Come up with a more elegant solution than literals
-            if (append) this.y = `${this.y}${y}`;
-            else this.y = y.toString();
+            if (append) {
+                // Reject multiple '.'
+                if (y != '.' || 
+                    (y === '.' && !this.y.includes('.'))) {
+                    this.y = `${this.y}${y}`;
+                }
+            }
+            else {
+                // If it's the first digit and it's '.', add it as '0.'
+                if (this.y === null && y === '.') {
+                    this.y = '0.';
+                } else {
+                    this.y = y.toString();
+                }
+            }
         };
 
         this.setOperator = function (operator) { this.operator = operator; };
@@ -89,14 +113,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // If x is empty -> set it
             if (x === null) {
                 calculator.setX(operandValue);
-                calculator.refreshDisplay(operandValue);
+                calculator.refreshDisplay(calculator.getX());
             } else if (x != null && operator === null) {
                 // If there's no operator yet -> keep appending digits
                 calculator.setX(operandValue, APPEND);
                 calculator.refreshDisplay(calculator.getX());
             } else if (y === null) {
                 calculator.setY(operandValue);
-                calculator.refreshDisplay(operandValue);
+                calculator.refreshDisplay(calculator.getY());
             } else if (y != null) {
                 // If lOp & the operator are already there, set/replace the rOp
                 calculator.setY(operandValue, APPEND);
