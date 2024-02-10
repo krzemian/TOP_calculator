@@ -76,26 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // OPERAND CLICKED
             const operandValue = click.target.textContent;
 
-            // TODO!: Implement float (.)
-            // Guardrails: one dot only (.contains()?), placed in the middle
-            // Input handling: "." with no x appends it to "0."
-            // ! I need a way to temporarily store 0.0 and 3.0000 etc.
-            // SCENARIOS: 
-            // . -> store as 0.
-            // 123.
-            // 0.3
-            // 0.0004
-            // 0.3. -> reject if value contains "." already
-            // Now that I think of it, I will actually benefit from storing 
-            // x & y as strings
-
-            // TODO: Cap the number of digits
-
-            // TODO: Add Backspace
-            // Works on y if not null, then on x if not null
-            // or is ignored. The presence of an operator doesn't matter
-            // Will empty the equalsBuffer
-
             // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
             // Consider a separate +/- button?
             // SCENARIOS:
@@ -105,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 41.5 … … -> [+/-] -> just negate
             // 13 -/+ -> [+/-] -> just negate 13, nullify the operator
 
+            // TODO: Cap the number of digits allowed
             // If x is empty -> set it
             if (x === null) {
                 calculator.setX(operandValue);
@@ -132,16 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.clearOperator();
                 calculator.refreshDisplay();
             } else if (operatorValue === 'BCKSPC') {
-                // TODO!: It needs to handle NUMBER-IN-PROGRESS values (i.e. 0.4 -> 0.)
                 if (y != null) {
                     calculator.trimY();
                     calculator.refreshDisplay(calculator.getY());
-                    // WIP: Remove one character of y
                 } else if (x != null) {
                     calculator.trimX();
                     calculator.refreshDisplay(calculator.getX());
                     calculator.clearOperator();
-                    // WIP: Remove one character of x
                 }
 
             } else if (x != null && y === null && operatorValue != '=') {
