@@ -356,14 +356,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.pushOperator('A/C');
             }
         }
+        console.log('down: ' + e.key);
 
         isPressed[e.key] = true;
         console.log(isPressed);
     });
 
     window.addEventListener('keyup', (e) => {
+        console.log('up: ' + e.key);
         isPressed[e.key] = false;
 
+        if (e.key === 'Meta') {
+            // macOS bug prevents keyup events of regular keys 
+            // when Meta (opt) is pressed, too 
+            // As a workaround, I release all keys when Meta keyup is detected
+            for (key in buttonSelectorMap) {
+                const btn = document.querySelector(buttonSelectorMap[key]);
+                btn.classList.remove('active');
+            }
+
+            for (key in isPressed) {
+                isPressed[key] = false;
+            }
+        }
         if (buttonSelectorMap[e.key] != undefined) {
             const btn = document.querySelector(buttonSelectorMap[e.key]);
             btn.classList.toggle('active');
