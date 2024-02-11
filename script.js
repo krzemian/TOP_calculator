@@ -184,8 +184,10 @@ class Calculator {
                 if (value != '.' || 
                     (value === '.' && !this[operand].includes('.'))) {
 
-                    // Avoid appending zeroes to 0 (i.e. '00')
-                    if (this[operand] != '0') {
+                    // Avoid appending digits to 0 (i.e. 00, 07)
+                    // Allow appending '.' to 0 (for '0.' floats)
+                    if (this[operand] != '0' ||
+                        (this[operand] === '0' && value === '.')) {
                         this[operand] = `${this[operand]}${value}`;
                     } else {
                         this[operand] = value;
