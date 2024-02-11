@@ -289,9 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // OPERATOR CLICKED
             calculator.pushOperator(click.target.textContent);
         }
-
-        // TEMP: Log values to console
-        calculator.logValues();
     });
 
     window.addEventListener('keydown', (e) => {
@@ -304,8 +301,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         else if (e.key === 'Backspace') calculator.pushOperator('DEL');
         else if (e.key === 'c' || e.key === 'r') calculator.pushOperator('A/C');
-
-        // TEMP: Log values to console
-        calculator.logValues();
     });
 });
