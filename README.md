@@ -10,9 +10,9 @@ Features that are already implemented:
 6. Negating operator (`+/-`)
 7. Exponentiation operator (`^`)
 8. Percent operator (`%`)
+9. ⭐️ Handling multiple `=` in a row
 
 ## TODO
-- [ ] Handling multiple `=` in a row
 - [ ] Decimal rounding (esp. for repeating numbers)
 - [ ] Truncating/limiting digits
 - [ ] Finalize styling

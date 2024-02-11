@@ -17,6 +17,11 @@ class Calculator {
         this.y = null;
         this.operator = null;
 
+        // Declare a buffer for storing values in case 
+        // multiple '=' are pressed in a row
+        // Effectively, this allows to repeat the last calculation
+        this.multiEqualBuffer = { x: null, y: null, operator: null };
+
         this.calculate = function () {
             return operations[this.operator](this.x, this.y);
         };
@@ -66,6 +71,7 @@ class Calculator {
                 this.clearX();
                 this.clearY();
                 this.clearOperator();
+                this.clearBuffer();
                 this.refreshDisplay('0');
             } else if (operatorValue === 'BCKSPC') {
                 if (this.getY() != null) {
@@ -80,6 +86,7 @@ class Calculator {
                     this.clearOperator();
                 }
 
+                this.clearBuffer();
             } else if (this.getX() != null && this.getY() === null && operatorValue != '=') {
                 // Implementing logic for unary operators (%, +/-)
                 if (operatorValue === '%' || operatorValue === '+/-') {
@@ -97,6 +104,25 @@ class Calculator {
                     // (unless it's '=', then ignore it)
                     this.setOperator(operatorValue);
                 }
+
+                this.clearBuffer();
+            } else if (operatorValue === '=' && this.multiEqualBuffer.operator != null) {
+                // Overwrite y & operator with stored buffer values
+                this.setX(this.multiEqualBuffer.x);
+                this.setY(this.multiEqualBuffer.y);
+                this.setOperator(this.multiEqualBuffer.operator);
+
+                const result = this.calculate();
+
+                // Update the x value in both places
+                this.setX(result);
+                this.setBuffer(result)
+
+                // Clean up after the '=' event
+                this.clearY();
+                this.clearOperator();
+
+                this.refreshDisplay(result);
             } else if (this.getX() != null 
                     && this.getY() != null
                     && this.getOperator() != null) {
@@ -104,6 +130,10 @@ class Calculator {
                     // Just display results
                     const result = this.calculate();
                     this.setX(result);
+
+                    // Set the buffer for potential multiple '=' events
+                    this.setBuffer(result, this.getY(), this.getOperator())
+                    
                     this.clearY();
                     this.clearOperator();
 
@@ -113,6 +143,7 @@ class Calculator {
                     this.clearX();
                     this.clearY();
                     this.clearOperator();
+                   this.clearBuffer();
 
                     this.unaliveDisplay();
                 } else if (operatorValue === '%' || operatorValue === '+/-') {
@@ -133,37 +164,19 @@ class Calculator {
 
                     this.clearY();
                     this.clearOperator();
+                    this.clearBuffer();
 
                     this.refreshDisplay(result);
                 } else {
                     // Finally, just calculate it
                     const result = this.calculate();
                     this.setX(result);
-                    this.clearY();
                     this.setOperator(operatorValue);
+                    this.clearY();
+                    this.clearBuffer();
 
                     this.refreshDisplay(result);
                 }
-
-                // TODO!: Implement logic for multiple "="s pressed
-                //   This would require applying the same operator & y multiple times
-                //   Hence will likely require changes in 
-                //   the operand/operator/result memory storage mechanism
-                // CURRENT BEHAVIOR: operator and y are cleared after "="
-                // DESIRED BEHAVIOR: 
-                //  Keep operator (not "=") and y in place, so that multiple "=" can be triggered
-                //    QUESTION: What would happen if I then press a different operator?
-                //      I'd have x y and a previous operator AND a new (just clicked) operatorValue
-                //      Currently, this would calculate x [prevOp] y, then replace prevOp with operatorValue
-                //      But that shouldn't be happening (it should treat it as if there was no operator)
-                //          !!!SOLUTION IDEA 1: after "=", clear x and operator, but store it in a special equalBuffer (name tbd)
-                //          So that as long as the "=" is getting pressed, execute that
-                //          HOWEVER! As soon as anything other than "=" is pressed, the equalBuffer MUST be wiped clean
-                //          (so basically, whenever you perform any operation on numbers, wipe equalBuffer clean; whenever you perform
-                //          any operation on non-"=" operands, wipe equalBuffer clean). Names: multiEqualsBuffer
-                // IDEA: Make it a rule to never store "=" as an operator (use it as a special trigger)
-                // IDEA: Perhaps I could implement a stack structure and push elements onto it
-
                 // TODO: Keep buttons as active (or otherwise indicate that a given operator is being applied)
              }
         };
@@ -216,6 +229,27 @@ class Calculator {
 
         this.setOperator = function (operator) { this.operator = operator; };
 
+        this.setBuffer = function (x, y = null, operator = null) {
+            // No need to refresh  & operator since it's just a '='
+            // pressed multiple times, so they stay the same
+            if (y === null && operator === null) {
+                this.multiEqualBuffer.x = x.toString();
+            } else {
+                this.multiEqualBuffer.x = x.toString();
+                this.multiEqualBuffer.y = y.toString();
+                this.multiEqualBuffer.operator = operator.toString();
+            }
+        };
+
+        this.clearBuffer = function () {
+            // This method is called every time an operator
+            // other than '=' is called.
+            // Effectively keeping the buffer only for the '=' operations
+            this.multiEqualBuffer.x = null;
+            this.multiEqualBuffer.y = null;
+            this.multiEqualBuffer.operator = null;
+        }
+
         // x and y are stored as strings now to allow 
         // easy storage of unfinished numbers, like 3.000 or 0.
         this.getX = function () { return this.x; };
@@ -231,6 +265,11 @@ class Calculator {
                 L: this.getX(), 
                 R: this.getY(), 
                 OP: this.getOperator()
+            });
+            console.table({
+                BufferL: this.multiEqualBuffer.x,
+                BufferR: this.multiEqualBuffer.y,
+                BufferOP: this.multiEqualBuffer.operator,
             });
         }
     };
@@ -257,7 +296,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('keydown', (e) => {
         if ('0123456789.'.includes(e.key)) {
-            console.log('hej');
             calculator.pushOperand(e.key);
         }
         else if (calculator.hasOperator(e.key) || e.key === '=') {
