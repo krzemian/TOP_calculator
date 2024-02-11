@@ -120,7 +120,8 @@ body {
 }
 
 .calculator__button--operand {
-    flex-basis: 32%;
+    /* A bit ugly */
+    flex-basis: 32.3%;
     height: auto;
     aspect-ratio: 1.618 / 1;
     font-size: 1.5rem;
