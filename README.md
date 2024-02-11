@@ -18,4 +18,5 @@ Features denoted with ⭐️ are extras beyond the scope of the original project
 ## TODO
 - [ ] Decimal rounding (esp. for repeating numbers)
 - [ ] Truncating/limiting digits
-- [ ] Refactoring the codebase (see `TODO: ` comments)
+- [ ] Codebase refactoring (see `TODO: ` comments)
+- [ ] Better handling of float operations (accuracy)
