@@ -1,5 +1,5 @@
 This is a JS calculator as part of
-[The Odin Project's curriculum](https://www.theodinproject.com/lessons/foundations-calculator).
+[The Odin Project's curriculum](https://www.theodinproject.com/lessons/foundations-calculator). See it [live](https://krzemian.github.io/TOP_calculator/).
 
 Features that are already implemented:
 1. Basic operators
@@ -12,7 +12,7 @@ Features that are already implemented:
 8. Percent operator (`%`)
 
 ## TODO
-- [ ] Handling multiple `=`s in a row
+- [ ] Handling multiple `=` in a row
 - [ ] Decimal rounding (esp. for repeating numbers)
 - [ ] Truncating/limiting digits
 - [ ] Finalize styling
