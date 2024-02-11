@@ -67,13 +67,13 @@ class Calculator {
             // thus avoiding code duplication/dispersion
             // (and be likely much cleaner)
 
-            if (operatorValue === 'CLR') {
+            if (operatorValue === 'A/C') {
                 this.clearX();
                 this.clearY();
                 this.clearOperator();
                 this.clearBuffer();
                 this.refreshDisplay('0');
-            } else if (operatorValue === 'BCKSPC') {
+            } else if (operatorValue === 'DEL') {
                 if (this.getY() != null) {
                     this.trimY();
                     // This actually requires getting y
@@ -302,8 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Register operators
             calculator.pushOperator(e.key);
         }
-        else if (e.key === 'Backspace') calculator.pushOperator('BCKSPC');
-        else if (e.key === 'c') calculator.pushOperator('CLR');
+        else if (e.key === 'Backspace') calculator.pushOperator('DEL');
+        else if (e.key === 'c' || e.key === 'r') calculator.pushOperator('A/C');
 
         // TEMP: Log values to console
         calculator.logValues();

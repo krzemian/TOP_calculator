@@ -10,7 +10,23 @@
 <body>
 <div class="calculator">
     <input type="text" id="calculator__display">
-    <div class="calculator__buttons-container">
+    <div class="calculator__operators">
+        <div class="calculator__operators--left">
+            <button class="calculator__button calculator__button--operator calculator__button--equals">=</button>
+            <button class="calculator__button calculator__button--operator">DEL</button>
+            <button class="calculator__button calculator__button--operator">A/C</button>
+        </div>
+        <div class="calculator__operators--right">
+            <button class="calculator__button calculator__button--operator">+</button>
+            <button class="calculator__button calculator__button--operator">-</button>
+            <button class="calculator__button calculator__button--operator">*</button>
+            <button class="calculator__button calculator__button--operator">/</button>
+            <button class="calculator__button calculator__button--operator">^</button>
+            <button class="calculator__button calculator__button--operator">%</button>
+            <button class="calculator__button calculator__button--operator">+/-</button>
+        </div>
+    </div>
+    <!-- <div class="calculator__buttons-container"> -->
         <div class="calculator__operands">
             <button class="calculator__button calculator__button--operand">1</button>
             <button class="calculator__button calculator__button--operand">2</button>
@@ -24,19 +40,7 @@
             <button class="calculator__button calculator__button--operand">0</button>
             <button class="calculator__button calculator__button--operand">.</button>
         </div>
-        <div class="calculator__operators">
-            <button class="calculator__button calculator__button--operator">=</button>
-            <button class="calculator__button calculator__button--operator">+</button>
-            <button class="calculator__button calculator__button--operator">-</button>
-            <button class="calculator__button calculator__button--operator">*</button>
-            <button class="calculator__button calculator__button--operator">/</button>
-            <button class="calculator__button calculator__button--operator">^</button>
-            <button class="calculator__button calculator__button--operator">%</button>
-            <button class="calculator__button calculator__button--operator">+/-</button>
-            <button class="calculator__button calculator__button--operator">BCKSPC</button>
-            <button class="calculator__button calculator__button--operator">CLR</button>
-        </div>
-    </div>
+    <!-- </div> -->
 </div>
 </body>
 </html>
