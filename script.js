@@ -54,6 +54,14 @@ class Calculator {
         }
 
         this.pushOperator = function(operatorValue) {
+            // TODO: Need to handle '6.' * '7.' edge cases
+            // i.e. 6., 3.000
+            // How about introducing a partialNumber/
+            // numberInProgress state flag?
+            // This would centralize the handling logic,
+            // thus avoiding code duplication/dispersion
+            // (and be likely much cleaner)
+
             if (operatorValue === 'CLR') {
                 this.clearX();
                 this.clearY();
