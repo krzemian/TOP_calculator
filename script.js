@@ -279,6 +279,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const APPEND = true;
     const calculatorGUI = document.querySelector('.calculator');
     const calculator = new Calculator(); 
+    const isPressed = {}; // Prevent multiple events when holding a key
+
+    // All this just to trigger active button states for keyboard events
+    const buttonSelectorMap = {
+        '=': '#btnEqual',
+        'Backspace': '#btnDel',
+        'c': '#btnClr',
+        'r': '#btnClr',
+        '+': '#btnPlus',
+        '-': '#btnMinus',
+        '*': '#btnMulti',
+        '/': '#btnDivide',
+        '^': '#btnPower',
+        '%': '#btnPercent',
+        '+/-': '#btnNeg',
+        '1': '#btn1',
+        '2': '#btn2',
+        '3': '#btn3',
+        '4': '#btn4',
+        '5': '#btn5',
+        '6': '#btn6',
+        '7': '#btn7',
+        '8': '#btn8',
+        '9': '#btn9',
+        '0': '#btn0',
+        '.': '#btnDot',
+    }
 
     // Catch button events
     calculatorGUI.addEventListener('click', (click) => {
@@ -292,14 +319,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('keydown', (e) => {
-        if ('0123456789.'.includes(e.key)) {
-            calculator.pushOperand(e.key);
+        if(!isPressed[e.key]) {
+            // OPERANDS
+            if ('0123456789.'.includes(e.key)) {
+                // TODO: DRY! This needs to get encapsulated in a function
+                if (buttonSelectorMap[e.key] != undefined) {
+                    const btn = document.querySelector(buttonSelectorMap[e.key]);
+                    btn.classList.toggle('active');
+                }
+
+                calculator.pushOperand(e.key);
+            }
+            // OPERATORS
+            else if (calculator.hasOperator(e.key) || e.key === '=') {
+                if (buttonSelectorMap[e.key] != undefined) {
+                    const btn = document.querySelector(buttonSelectorMap[e.key]);
+                    btn.classList.toggle('active');
+                }
+
+                calculator.pushOperator(e.key);
+            }
+            else if (e.key === 'Backspace') {
+                if (buttonSelectorMap[e.key] != undefined) {
+                    const btn = document.querySelector(buttonSelectorMap[e.key]);
+                    btn.classList.toggle('active');
+                }
+
+                calculator.pushOperator('DEL');
+            }
+            else if (e.key === 'c' || e.key === 'r') {
+                if (buttonSelectorMap[e.key] != undefined) {
+                    const btn = document.querySelector(buttonSelectorMap[e.key]);
+                    btn.classList.toggle('active');
+                }
+
+                calculator.pushOperator('A/C');
+            }
         }
-        else if (calculator.hasOperator(e.key) || e.key === '=') {
-            // Register operators
-            calculator.pushOperator(e.key);
-        }
-        else if (e.key === 'Backspace') calculator.pushOperator('DEL');
-        else if (e.key === 'c' || e.key === 'r') calculator.pushOperator('A/C');
+
+        isPressed[e.key] = true;
+        console.log(isPressed);
     });
+
+    window.addEventListener('keyup', (e) => {
+        isPressed[e.key] = false;
+
+        if (buttonSelectorMap[e.key] != undefined) {
+            const btn = document.querySelector(buttonSelectorMap[e.key]);
+            btn.classList.toggle('active');
+        }
+    })
 });

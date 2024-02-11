@@ -87,27 +87,23 @@ body {
 .calculator__button--operator {
     background: #7FA691;
     color: #f0f9f4;
-    /* color: white; */
-    /* border-color: #B07200;
-    color: #724a00; */
-}
-
-.calculator__button--operator:active,
-.calculator__button--operand:active {
-    background: #FFC14E;
-    /* border-color: #a17a31; */
-}
-
-.calculator__button--operator:focus-visible,
-.calculator__button--operand:focus-visible {
-    border: 0;
-    outline: 0;
 }
 
 .calculator__button--equals {
     background: #f3920a;
     flex-grow: 1;
     flex-basis: 100%;
+}
+
+.calculator__button--operator:active,
+.calculator__button--operand:active, .active {
+    background: #FFC14E !important;
+}
+
+.calculator__button--operator:focus-visible,
+.calculator__button--operand:focus-visible {
+    border: 0;
+    outline: 0;
 }
 
 /*** OPERANDS ***/
