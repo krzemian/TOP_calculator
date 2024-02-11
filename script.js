@@ -290,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '+': '#btnPlus',
         '-': '#btnMinus',
         '*': '#btnMulti',
+        'x': '#btnMulti',
         '/': '#btnDivide',
         '^': '#btnPower',
         '%': '#btnPercent',
@@ -331,13 +332,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 calculator.pushOperand(e.key);
             }
             // OPERATORS
-            else if (calculator.hasOperator(e.key) || e.key === '=') {
+            else if (calculator.hasOperator(e.key) || e.key === '=' || e.key === 'x') {
                 if (buttonSelectorMap[e.key] != undefined) {
                     const btn = document.querySelector(buttonSelectorMap[e.key]);
                     btn.classList.toggle('active');
                 }
 
-                calculator.pushOperator(e.key);
+                // * alias, kinda implementation ugly though
+                if (e.key === 'x') calculator.pushOperator('*');
+                else calculator.pushOperator(e.key);
             }
             else if (e.key === 'Backspace') {
                 if (buttonSelectorMap[e.key] != undefined) {
