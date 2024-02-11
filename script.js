@@ -25,6 +25,9 @@ class Calculator {
             display.value = value;
         };
 
+        // Initialize display to 0
+        this.refreshDisplay('0');
+
         this.unaliveDisplay = function () {
             display.value = '☠️☠️☠️';
         };
