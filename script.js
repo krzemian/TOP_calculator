@@ -8,7 +8,8 @@ class Calculator {
             '*': (x, y) => +x * +y,
             '/': (x, y) => +x / +y,
             '^': (x, y) => (+x) ** +y,
-            '%': (x, y) => +x / 100 // TODO!: Fix %
+            '%': (x) => +x / 100,
+            '+/-': (x) => -(+x)
         };
         const display = document.querySelector('#calculator__display');
 
@@ -29,15 +30,6 @@ class Calculator {
         };
 
         this.pushOperand = function(operandValue) {
-            // TODO!: Implement negative numbers! ("-" allowed as x sign, too)
-            // Consider a separate +/- button?
-            // SCENARIOS:
-            // 34 * 53 -> [+/-] pressed -> calculate (here: multiply), then negate
-            // … -> [+/-] -> activate "-", display the negative prompt 
-            //    (AGAIN, IN NEED FOR STORING NUMBER-IN-PROGRESS VALUES LIKE -, 0., 3.000)
-            // 41.5 … … -> [+/-] -> just negate
-            // 13 -/+ -> [+/-] -> just negate 13, nullify the operator
-
             // TODO: Cap the number of digits allowed
             // If x is empty -> set it
             if (this.getX() === null) {
@@ -63,7 +55,6 @@ class Calculator {
 
         this.pushOperator = function(operatorValue) {
             if (operatorValue === 'CLR') {
-                // TODO: Implement AC/C, too
                 this.clearX();
                 this.clearY();
                 this.clearOperator();
@@ -82,8 +73,8 @@ class Calculator {
                 }
 
             } else if (this.getX() != null && this.getY() === null && operatorValue != '=') {
-                // If it's number + %, calculate it
-                if (operatorValue === '%') {
+                // Implementing logic for unary operators (%, +/-)
+                if (operatorValue === '%' || operatorValue === '+/-') {
                     // TODO: This violates DRY (see below), should be cleaner
                     this.setOperator(operatorValue);
                     const result = this.calculate();
@@ -116,15 +107,16 @@ class Calculator {
                     this.clearOperator();
 
                     this.unaliveDisplay();
-                } else if (operatorValue === '%') {
-                    // This is a weird scenario, but I went for the logic:
-                    // Calculate whatever is in the memory, then
-                    // calculate x 100% (aka divide by 100), again
+                } else if (operatorValue === '%' || operatorValue === '+/-') {
+                    // Logic for operations followed by a unary operator
+                    // I went for the following logic:
+                    // 1. Calculate whatever is in the memory, then
+                    // 2. Apply the unary operator (%, +/-) to the result
 
                     // Calculate whatever's in memory and put results in x
                     this.setX(this.calculate());
 
-                    // Set it ready for '%' calculations
+                    // Perform the unary operation
                     this.setOperator(operatorValue);
                     const result = this.calculate();
 
@@ -145,9 +137,6 @@ class Calculator {
                     this.refreshDisplay(result);
                 }
 
-                // TODO: Make keyboard, but disregard any other keys except for the ones that make sense for calculating (+, -, /, *, 0–9 – what about pwr and sqrt?)
-                // You might run into an issue where keys such as (/) might cause you some trouble. Read the MDN documentation for event.preventDefault to help solve this problem.
-                        
                 // TODO!: Implement logic for multiple "="s pressed
                 //   This would require applying the same operator & y multiple times
                 //   Hence will likely require changes in 
@@ -207,6 +196,8 @@ class Calculator {
                 // If it's the first digit and it's '.', add it as '0.'
                 if (this[operand] === null && value === '.') {
                     this[operand] = '0.';
+                    // TODO!: Fix 0. when provided verbatim by the user 
+                    // (currently the 0 digit disappears)
                 } else {
                     this[operand] = value.toString();
                 }
